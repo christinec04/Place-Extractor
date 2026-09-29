@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { LINK_KIND_LABELS } from "@/lib/parse-link";
 import type { ExtractResponse, Place } from "@/lib/types";
 import { CONFIDENT, PlaceCard } from "./place-card";
@@ -40,18 +41,14 @@ export function Results({ result }: { result: ExtractResponse }) {
           <h2 className="text-xl font-semibold">
             {places.length} places found
           </h2>
-          <p className="text-sm text-muted">
+          <p className="text-sm text-muted-foreground">
             From {result.videoCount} {result.videoCount === 1 ? "video" : "videos"} ·{" "}
             {LINK_KIND_LABELS[result.kind]}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={toggleAll}
-          className="text-sm font-medium text-accent hover:underline"
-        >
+        <Button type="button" variant="link" onClick={toggleAll} className="h-auto p-0 text-sm">
           {allSelected ? "Deselect all" : "Select all"}
-        </button>
+        </Button>
       </div>
 
       <ul className="space-y-3">
@@ -81,22 +78,23 @@ function ExportBar({ places }: { places: Place[] }) {
           <span className="font-semibold">{count}</span> selected
         </p>
         <div className="flex gap-2">
-          <button
+          <Button
             type="button"
+            variant="outline"
             disabled={count === 0}
             onClick={() => downloadCsv(places)}
-            className="rounded-xl border border-border bg-card px-4 py-2 text-sm font-medium transition hover:bg-accent-soft disabled:opacity-50"
+            className="h-9 rounded-xl px-4"
           >
             Download CSV
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             disabled
             title="Coming soon: sign in with Google to save these to My Maps"
-            className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground disabled:opacity-50"
+            className="h-9 rounded-xl px-4"
           >
             Save to Google Maps
-          </button>
+          </Button>
         </div>
       </div>
     </div>

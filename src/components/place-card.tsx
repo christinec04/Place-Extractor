@@ -1,3 +1,6 @@
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { Place, PlaceCategory } from "@/lib/types";
 
 export const CONFIDENT = 0.75;
@@ -21,37 +24,37 @@ export function PlaceCard({ place, selected, onToggle }: Props) {
   const lowConfidence = place.confidence < CONFIDENT;
 
   return (
-    <article
-      className={`flex gap-4 rounded-2xl border bg-card p-4 transition ${
-        selected ? "border-accent ring-1 ring-accent/40" : "border-border"
+    <Card
+      className={`flex-row items-start gap-4 p-4 transition ${
+        selected ? "border-primary ring-1 ring-primary/40" : "border-border ring-0"
       }`}
     >
-      <input
-        type="checkbox"
+      <Checkbox
         checked={selected}
-        onChange={onToggle}
+        onCheckedChange={onToggle}
         aria-label={`Select ${place.name}`}
-        className="mt-1 size-5 shrink-0 cursor-pointer accent-accent"
+        className="mt-1 shrink-0"
       />
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span aria-hidden>{CATEGORY_ICONS[place.category]}</span>
           <h3 className="font-semibold">{place.name}</h3>
-          <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs capitalize text-accent">
+          <Badge variant="secondary" className="capitalize">
             {place.category}
-          </span>
+          </Badge>
           {lowConfidence && (
-            <span
+            <Badge
+              variant="outline"
               title="We're not sure this match is right. Check it on Google Maps."
-              className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
+              className="border-amber-300 bg-amber-100 text-amber-800 dark:border-amber-900 dark:bg-amber-950/60 dark:text-amber-300"
             >
               Check match
-            </span>
+            </Badge>
           )}
         </div>
 
-        <p className="mt-1 truncate text-sm text-muted">{place.address}</p>
+        <p className="mt-1 truncate text-sm text-muted-foreground">{place.address}</p>
 
         {place.tip && <p className="mt-2 text-sm">“{place.tip}”</p>}
 
@@ -60,7 +63,7 @@ export function PlaceCard({ place, selected, onToggle }: Props) {
             href={place.googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-accent hover:underline"
+            className="font-medium text-primary hover:underline"
           >
             Open in Google Maps ↗
           </a>
@@ -68,13 +71,13 @@ export function PlaceCard({ place, selected, onToggle }: Props) {
             href={place.source.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted hover:underline"
+            className="text-muted-foreground hover:underline"
           >
             From @{place.source.author} on{" "}
             {place.source.platform === "tiktok" ? "TikTok" : "Instagram"}
           </a>
         </div>
       </div>
-    </article>
+    </Card>
   );
 }

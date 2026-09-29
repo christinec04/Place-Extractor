@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LINK_KIND_LABELS, parseLink } from "@/lib/parse-link";
 import type { ExtractResponse } from "@/lib/types";
 import { Results } from "./results";
@@ -48,7 +52,7 @@ export function Extractor() {
     <div className="space-y-8">
       <form onSubmit={handleSubmit} className="space-y-2">
         <div className="flex flex-col gap-2 sm:flex-row">
-          <input
+          <Input
             type="url"
             inputMode="url"
             required
@@ -56,17 +60,17 @@ export function Extractor() {
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://www.tiktok.com/@creator/video/…"
             aria-label="TikTok or Instagram link"
-            className="min-w-0 flex-1 rounded-xl border border-border bg-card px-4 py-3 outline-none placeholder:text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/30"
+            className="h-12 min-w-0 flex-1 rounded-xl px-4 text-base"
           />
-          <button
+          <Button
             type="submit"
             disabled={state.status === "loading"}
-            className="rounded-xl bg-accent px-5 py-3 font-medium text-accent-foreground transition hover:opacity-90 disabled:opacity-60"
+            className="h-12 rounded-xl px-5 text-base"
           >
             {state.status === "loading" ? "Extracting…" : "Extract places"}
-          </button>
+          </Button>
         </div>
-        <p className="h-5 text-sm text-muted">
+        <p className="h-5 text-sm text-muted-foreground">
           {detected && state.status !== "loading" && <>Detected: {detected}</>}
         </p>
       </form>
@@ -74,12 +78,9 @@ export function Extractor() {
       {state.status === "loading" && <LoadingSkeleton />}
 
       {state.status === "error" && (
-        <p
-          role="alert"
-          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300"
-        >
-          {state.message}
-        </p>
+        <Alert variant="destructive">
+          <AlertDescription>{state.message}</AlertDescription>
+        </Alert>
       )}
 
       {state.status === "done" && <Results result={state.result} />}
@@ -90,12 +91,11 @@ export function Extractor() {
 function LoadingSkeleton() {
   return (
     <div className="space-y-3" aria-live="polite">
-      <p className="text-sm text-muted">Watching the video and looking for places…</p>
+      <p className="text-sm text-muted-foreground">
+        Watching the video and looking for places…
+      </p>
       {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className="h-24 animate-pulse rounded-2xl border border-border bg-card"
-        />
+        <Skeleton key={i} className="h-24 rounded-2xl" />
       ))}
     </div>
   );
