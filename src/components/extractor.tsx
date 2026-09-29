@@ -1,19 +1,21 @@
 "use client";
 
-import { LINK_KIND_LABELS, parseLink } from "@/lib/parse-link";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { useState } from "react";
-import { ExtractResponse } from "@/lib/types";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { LINK_KIND_LABELS, parseLink } from "@/lib/parse-link";
+import type { ExtractResponse } from "@/lib/types";
+import { LoadingSkeleton } from "./loading";
 
 type State =
   | { status: "idle" }
   | { status: "loading" }
   | { status: "error"; message: string }
   | { status: "done"; result: ExtractResponse };
-  
+
 export function Extractor() {
-   const [url, setUrl] = useState("");
+  const [url, setUrl] = useState("");
   const [state, setState] = useState<State>({ status: "idle" });
 
   const parsed = url.trim() ? parseLink(url) : null;
@@ -71,7 +73,14 @@ export function Extractor() {
           {detected && state.status !== "loading" && <>Detected: {detected}</>}
         </p>
       </form>
+
+      {state.status === "loading" && <LoadingSkeleton />}
+
+      {state.status === "error" && (
+        <Alert variant="destructive">
+          <AlertDescription>{state.message}</AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 }
-
