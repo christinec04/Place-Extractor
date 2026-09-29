@@ -16,11 +16,12 @@ const CATEGORY_ICONS: Record<PlaceCategory, string> = {
 
 interface Props {
   place: Place;
+  selected: boolean;
+  onToggle: () => void;
 }
 
-export function PlaceCard({ place }: Props) {
+export function PlaceCard({ place, selected, onToggle }: Props) {
   const lowConfidence = place.confidence < CONFIDENT;
-  const selected = 1;
 
   return (
     <Card
@@ -28,6 +29,13 @@ export function PlaceCard({ place }: Props) {
         selected ? "border-primary ring-1 ring-primary/40" : "border-border ring-0"
       }`}
     >
+      <Checkbox
+        checked={selected}
+        onCheckedChange={onToggle}
+        aria-label={`Select ${place.name}`}
+        className="mt-1 shrink-0"
+      />
+
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span aria-hidden>{CATEGORY_ICONS[place.category]}</span>
