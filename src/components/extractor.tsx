@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { LINK_KIND_LABELS, parseLink } from "@/lib/parse-link";
 import type { ExtractResponse } from "@/lib/types";
 import { LoadingSkeleton } from "./loading";
+import { Results } from "./results";
 
 type State =
   | { status: "idle" }
@@ -81,6 +82,8 @@ export function Extractor() {
           <AlertDescription>{state.message}</AlertDescription>
         </Alert>
       )}
+
+      {state.status === "done" && <Results result={state.result} />}
     </div>
   );
 }
