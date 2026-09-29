@@ -1,0 +1,5 @@
+yt-dlp
+anthropic
+requests
+python-dotenv
+brotlicffi
