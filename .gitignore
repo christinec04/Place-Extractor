@@ -38,6 +38,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Claude lol
-AGENTS.md
-CLAUDE.md
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
